@@ -45,4 +45,13 @@ object ScalaPlayground extends App {
   println("fibonacci tail recursive")
   println(fibonacci(3))
 
+  // OOBasics Exercises
+
+  class Writer(fname: String, lname: String, dob: Int) {
+     def fullName(): String = s"$fname $lname"
+  }
+
+  val writer = new Writer("Sid", "Chan", 1997)
+  println(writer.fullName())
+
 }
