@@ -89,5 +89,5 @@ object Run extends App {
     override def transform(elem: Int): MyList[Int] = new Cons(elem, new Cons(elem+1, EmptyList))
   }).toString())
 
-  println(clonelist == )
+  println(clonelist == list)
 }
