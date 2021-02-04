@@ -67,17 +67,18 @@ object Run extends App {
   println(list.toString())
   println(listStr.toString())
 
-  println(list.map(new Function1[Int, Int] {
-    override def apply(elem: Int): Int = elem * 2
+
+  println(list.map({
+    x => x * 2
   }).toString())
 
-  println(list.filter(new Function1[Int, Boolean] {
-    override def apply(elem: Int): Boolean = (elem % 2 == 0)}).toString())
+  println(list.filter({
+    x => x % 2 == 0}).toString())
 
   println(list.++(new Cons(4, EmptyList)).toString())
 
-  println(list.flatMap(new Function1[Int, MyList[Int]] {
-    override def apply(elem: Int): MyList[Int] = new Cons(elem, new Cons(elem+1, EmptyList))
+  println(list.flatMap({
+    x => new Cons(x, new Cons(x+1, EmptyList))
   }).toString())
 
   println(clonelist == list)
