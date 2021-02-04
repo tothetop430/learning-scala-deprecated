@@ -38,6 +38,16 @@ object WhatsAFunction extends App {
   val x = someWeirdFunction(3)
   println(x(5))
 
+  val otherCurryFunc: Int => Int => Int = {
+    x => {
+      y => x + y
+    }
+  }
+
+  println(otherCurryFunc(5)(5))
+  val y = otherCurryFunc(5)
+  println(y(5))
+
 }
 
 trait MyFunction[A, B] {
