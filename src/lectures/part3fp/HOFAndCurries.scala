@@ -10,7 +10,4 @@ object HOFAndCurries extends App {
   def someUtility(x: Int): Int = x * 2
 
   println(nTimes(someUtility, 10, 2))
-
-
-
 }
