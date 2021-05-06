@@ -34,4 +34,86 @@ object TuplesAndMaps extends App {
 
   val someList = List("Abhishek", "Anmol", "Aayush", "Siddharth", "Shashank", "Yash")
   println(someList.groupBy(x => x.startsWith("A")))
+
+  val uniqueBook = Map("Jim" -> 123, "JIM" -> 456)
+  println(uniqueBook.map(pair => pair._1.toLowerCase -> pair._2))
+
+  // Social Network
+
+  val socialNetwork: Map[String, Set[String]] = Map()
+
+  def addPerson(network: Map[String, Set[String]], person: String): Map[String, Set[String]] = {
+    network + (person -> Set())
+  }
+
+  def friend(network: Map[String, Set[String]], a: String, b: String): Map[String, Set[String]] = {
+    val aFriends = network(a)
+    val bFriends = network(b)
+    network + (a -> (aFriends + b)) + (b -> (bFriends + a))
+  }
+
+  def unfriend(network: Map[String, Set[String]], a: String, b: String): Map[String, Set[String]] = {
+    val aFriends = network(a)
+    val bFriends = network(b)
+
+    network + (a -> (aFriends - b)) + (b -> (bFriends - a))
+  }
+
+  def removePerson(network: Map[String, Set[String]], person: String): Map[String, Set[String]] = {
+    def unfriendAux(friends: Set[String], auxNetwork: Map[String, Set[String]]): Map[String, Set[String]] = {
+      if (friends.isEmpty) auxNetwork
+      else unfriendAux(friends.tail, unfriend(auxNetwork, person, friends.head))
+    }
+    val friends = network(person)
+    val unfriendedNetwork = unfriendAux(friends, network)
+
+    unfriendedNetwork - person
+  }
+
+  val updatedsocialNetwork = addPerson(addPerson(socialNetwork, "Bob"), "Mary")
+  println(updatedsocialNetwork)
+  println(friend(updatedsocialNetwork, "Bob", "Mary"))
+  println(unfriend(friend(updatedsocialNetwork, "Bob", "Mary"), "Bob", "Mary"))
+  println(removePerson(friend(updatedsocialNetwork, "Bob", "Mary"), "Bob"))
+
+  val network = addPerson(addPerson(addPerson(socialNetwork, "Bob"), "Jim"), "Mary")
+  val jimBob = friend(network, "Bob", "Jim")
+  val testNet = friend(jimBob, "Bob", "Mary")
+
+  println(testNet)
+
+  def totalFriends(network: Map[String, Set[String]], person: String): Int = {
+    if (!network.contains(person)) 0
+    else network(person).size
+  }
+
+  def mostFriends(network: Map[String, Set[String]]): String = {
+    network.maxBy(pair => pair._2.size)._1
+  }
+
+  println(totalFriends(testNet, "Bob"))
+  println(mostFriends(testNet))
+
+  def noFriends(network: Map[String, Set[String]]): Int = {
+    network.view.filterKeys(key => network(key).isEmpty).size
+    // network.count(pair => pair._2.isEmpty)
+  }
+
+  println(noFriends(jimBob))
+
+  def socialConnection(network: Map[String, Set[String]], a: String, b: String): Boolean = {
+    def bfs(target: String, consideredPersons: Set[String], discoveredPersons: Set[String]): Boolean = {
+      if (discoveredPersons.isEmpty) false
+      else {
+        val newPerson = discoveredPersons.head
+        if (newPerson == target) true
+        else if (consideredPersons.contains(newPerson)) bfs(target, consideredPersons, discoveredPersons.tail)
+        else bfs(target, consideredPersons + newPerson, discoveredPersons.tail ++ network(newPerson))
+      }
+    }
+
+    bfs(b, Set(), network(a) + a)
+  }
+
+  println(socialConnection(jimBob, "Mary", "Jim"))
 }
