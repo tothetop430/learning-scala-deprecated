@@ -52,6 +52,9 @@ object Sequences extends App {
   val perfList: List[Int] = (1 to maxCapacity).toList
   val perfVector: Vector[Int] = (1 to maxCapacity).toVector
 
-  println(getWriteTime(perfList))
-  println(getWriteTime(perfVector))
+//  println(getWriteTime(perfList))
+//  println(getWriteTime(perfVector))
+
+  val a = List(1,2,3)
+  println(a :+ a(1))
 }
